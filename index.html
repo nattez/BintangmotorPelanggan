@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="servisRate">
+<head>
+  
+  <title>Bintang Motor</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <!-- CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/custom.css">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css">
+
+ 
+  
+</head>
+<body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="60" ng-controller="servisCtrl">
+
+  <nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>                        
+        </button>
+        <a class="navbar-brand" href="/pelanggan">BMotor</a>
+      </div>
+      <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="#about">ABOUT</a></li>
+          <li><a href="#services">SERVICES</a></li>
+          
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="jumbotron text-center">
+    <h1>Bintang Motor</h1> 
+    <p>Servis & Sparepart motor</p> 
+  </div>
+
+  <!-- Container (About Section) -->
+  <div id="about" class="container-fluid">
+    <div class="row">
+      <div class="col-sm-9">
+        <h2>Tentang Bengkel Bintang Motor</h2><br>
+        <h4>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</h4><br>
+      </div>
+      <div class="col-sm-3">
+        <span class="glyphicon glyphicon-wrench logo"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Container (Services Section) -->
+  <div id="services" class="container-fluid text-center bg-grey">
+    <h2 class="slideanim">SERVICES</h2>
+    <Br>
+    <div class="row slideanim">
+     <div class="col-sm-12 form-inline">
+      <p class="form-group text-left">
+        <input type="text" size="150"  class="form-control" id="nostnk" name="nostnk" placeholder="Masukkan ID service (minimal 7 karakter)" ng-model="search" minlength="7" required>
+        <a href="#schedule_target" class="btn btn-warning">Cari Service</a>
+      </p>
+     </div>
+    </div>
+    
+    <br><hr id="schedule_target" class="slideanim"><Br>
+    <div class="row slideanim" >
+      <div class="col-sm-12 text-left">
+
+        <h4 class="slideanim" ng-if="dsearch() != ull"><i><b>Hasil Pencarian :</b> {{dsearch()}}</i></h4><br>
+        <div class="slideanim" ng-if="((api_data.data.taskUnfinished | filter: {'no_stnk': dsearch()}) == 0)  && (dsearch() != ull)">Service tidak ditemukan</div>
+        
+        <div ng-repeat="x in api_data.data.taskUnfinished | filter: {'no_stnk': dsearch()}" ng-if="dsearch() != ull">
+          <h4 class="slideanim"><b>ID Service      :</b> {{x.uniqueString}} </h4>
+          <h4 class="slideanim"><b>Tanggal Service :</b> {{x.createdAt}}</h4>
+          <h4 class="slideanim"><b>Nomor STNK       :</b> {{x.no_stnk}}</h4>
+          <h4 class="slideanim"><b>Nama Pelanggan  :</b> {{x.nama_pelanggan}}</h4>
+          <h4 class="slideanim"><b>Keluhan Service :</b> {{x.keluhan}}</h4>
+          
+          <div ng-repeat="y in x.layanan">
+            <div class="panel panel-default text-center">
+              <div class="panel-heading">
+                <h4 style="color: #ffffff" class="slideanim"><b>Bagaimana penilaian anda tentang kinerja mekanik dalam memberikan layanan <i>{{y.tipe_layanan}} ({{y.nama_layanan}}) </i> ?</b> </h4>
+              </div>
+              <div class="panel-body">
+                <div class="row">
+                  <div class="col-sm-12">
+                      <label class="slideanim radio-inline">
+                       <input type="radio" name="opsiradio" ng-model="rate" value=1>1 (Sangat tidak baik)
+                      </label>
+                      <label class="slideanim radio-inline">
+                        <input type="radio" name="opsiradio" ng-model="rate" value=2>2 (Tidak baik)
+                      </label>
+                      <label class="slideanim radio-inline">
+                        <input type="radio" name="opsiradio" ng-model="rate" value=3>3 (Cukup)
+                      </label>
+                      <label class="slideanim radio-inline">
+                        <input type="radio" name="opsiradio" ng-model="rate" value=4>4 (Baik)
+                      </label>
+                      <label class="slideanim radio-inline">
+                        <input type="radio" name="opsiradio" ng-model="rate" value=5>5 (Sangat Baik)
+                      </label> <br>
+                      <hr class="slideanim">
+                      <a href="" ng-click="sendData()" class="slideanim btn btn-warning btn-lg">Kirim Rating</a>
+                      <p style="margin-top: 25px;" ng-hide="invisible" ng-show="visible" class="slideanim alert alert-success"><strong>Sukses!</strong> Terimakasih telah memberikan rating. <br>
+                      <a href="/pelanggan" class="alert-link">Klik dsini untuk refresh halaman</a>
+                      </p>
+                      
+                      <!-- Hidden -->
+                      <br><p id="unique_string" ng-hide="invisible" class="slideanim">{{x.uniqueString}}</p>
+                      <br><p id="rate_value" ng-hide="invisible" class="slideanim">{{rate}}</p>
+                  </div>
+                </div>
+              </div> <!-- end panel heading -->
+            </div>
+          
+            
+        </div>
+
+      </div>
+    </div>
+    <br> 
+  </div>
+
+  <!-- JS -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <script src="js/angular.min.js"></script>
+  <script src="js/custom.js"></script>
+  <!-- Google Analytics: change UA-XXXXX-X to be your site's ID.-->
+  <script>
+    (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+    function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+    e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+    e.src='//www.google-analytics.com/analytics.js';
+    r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+    ga('create','UA-XXXXX-X');ga('send','pageview');
+
+
+    //ANGULARJS
+    var app = angular.module('servisRate', []);
+    app.controller('servisCtrl', [ '$scope', '$http',  function($scope, $http) {
+      $scope.dsearch = function() {
+        var nostnk = $scope.search;
+        return nostnk;
+      } 
+
+      //GET TASK
+      $http({
+        method  : "GET",
+        url     : "https://skripsi-mekanik.herokuapp.com/api/v1/task",
+        headers : { 
+          "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkX3VzZXIiOjEsIm5hbWEiOiJ0aGUgRGlvbiBLaW5nIiwidXNlcm5hbWUiOiJEaW9uIiwiYWxhbWF0IjoiQmFuZHVuZyIsInRlbXBhdF9sYWhpciI6IkJhbmR1bmciLCJwb2ludHMiOjAsInRnbF9sYWhpciI6IjEyLTA5LTE5OTkiLCJleHBlcmllbmNlIjpudWxsLCJyZXdhcmRzIjoiIiwicGFzc3dvcmQiOiIkMmIkMTAkaEE3NC8xMm9tRnIyMjN2Z3lVbUUvT2IuMDRaRTJraWtGeXJORURidnRMdGhMVGlFaWg0OU8iLCJ0eXBlX3VzZXIiOiJhZG1pbiIsImRldmljZUlkIjpudWxsLCJjcmVhdGVkQXQiOiIyMDE5LTExLTE5VDA0OjQ5OjAyLjAwMFoiLCJ1cGRhdGVkQXQiOiIyMDE5LTExLTE5VDA0OjQ5OjAyLjAwMFoifSwiaWF0IjoxNTc0MTM4OTQ1LCJleHAiOjE1NzQyMjE3NDV9.RxEg_vIYvXtq2_a3X9WiCt-kfF2qCpdugMXD-S8e028" }
+      }).then(function get_api_success(response) {
+          $scope.api_data = response.data;
+          }, function get_api_error(response) {
+            $scope.api_data = response.statusText;
+        });
+
+      $scope.invisible = true;
+      //POST RATING
+      $scope.sendData = function() {
+        var getunique_string = document.getElementById("unique_string").innerHTML;
+        var getrate = document.getElementById("rate_value").innerHTML;
+        $scope.visible = true;
+
+        $http({
+          method  : "POST",
+          url     : "https://skripsi-mekanik.herokuapp.com/api/v1/rating",
+          headers : { 
+            "Content-Type" : "application/json",
+            "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkX3VzZXIiOjEsIm5hbWEiOiJ0aGUgRGlvbiBLaW5nIiwidXNlcm5hbWUiOiJEaW9uIiwiYWxhbWF0IjoiQmFuZHVuZyIsInRlbXBhdF9sYWhpciI6IkJhbmR1bmciLCJwb2ludHMiOjAsInRnbF9sYWhpciI6IjEyLTA5LTE5OTkiLCJleHBlcmllbmNlIjpudWxsLCJyZXdhcmRzIjoiIiwicGFzc3dvcmQiOiIkMmIkMTAkaEE3NC8xMm9tRnIyMjN2Z3lVbUUvT2IuMDRaRTJraWtGeXJORURidnRMdGhMVGlFaWg0OU8iLCJ0eXBlX3VzZXIiOiJhZG1pbiIsImRldmljZUlkIjpudWxsLCJjcmVhdGVkQXQiOiIyMDE5LTExLTE5VDA0OjQ5OjAyLjAwMFoiLCJ1cGRhdGVkQXQiOiIyMDE5LTExLTE5VDA0OjQ5OjAyLjAwMFoifSwiaWF0IjoxNTc0MTM4OTQ1LCJleHAiOjE1NzQyMjE3NDV9.RxEg_vIYvXtq2_a3X9WiCt-kfF2qCpdugMXD-S8e028" },
+          data    : {"uniqueString": getunique_string, "rating": getrate }
+          
+        }).then
+          (function (response){
+            $scope.api2_data = response.data;
+          }, function (response) {
+              $scope.api2_data = "Ada yang tidak beres!";
+             });
+
+      }; //end scope sendData
+
+     
+
+    }]); //end app controller
+  </script> 
+
+</body>
+</html>

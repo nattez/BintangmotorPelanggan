@@ -62,7 +62,7 @@
     <div class="row slideanim">
      <div class="col-sm-12 form-inline">
       <p class="form-group text-left">
-        <input type="text" size="150"  class="form-control" id="nostnk" name="nostnk" placeholder="Masukkan ID service (minimal 7 karakter)" ng-model="search" minlength="7" required>
+        <input type="text" size="150"  class="form-control" id="nostnk" name="nostnk" placeholder="Masukkan nomor stnk (minimal 7 karakter, contoh: 10229415)" ng-model="search" minlength="7" required>
         <a href="#schedule_target" class="btn btn-warning">Cari Service</a>
       </p>
      </div>
@@ -191,5 +191,14 @@
     }]); //end app controller
   </script> 
 
+  <!-- FIREBASE -->
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="/__/firebase/7.8.0/firebase-app.js"></script>
+
+  <!-- TODO: Add SDKs for Firebase products that you want to use
+       https://firebase.google.com/docs/web/setup#available-libraries -->
+
+  <!-- Initialize Firebase -->
+  <script src="/__/firebase/init.js"></script>
 </body>
 </html>
